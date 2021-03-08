@@ -18,5 +18,8 @@
   "homepage": "https://github.com/dradav97/proyectoAPVUI#readme",
   "devDependencies": {
     "jasmine": "^3.6.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
