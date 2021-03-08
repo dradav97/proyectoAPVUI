@@ -1,0 +1,22 @@
+{
+  "name": "proyectoapvui",
+  "version": "1.0.0",
+  "description": "Proyecto de Administración de Proyectos de Vinculación Universidad-Industria",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dradav97/proyectoAPVUI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dradav97/proyectoAPVUI/issues"
+  },
+  "homepage": "https://github.com/dradav97/proyectoAPVUI#readme",
+  "devDependencies": {
+    "jasmine": "^3.6.4"
+  }
+}
