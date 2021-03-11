@@ -7,6 +7,6 @@ workdir /usr/src
 
 RUN npm install
 
-EXPOSE 300
+EXPOSE 3000
 
-CMD ["node", "./api/index.js"]
+CMD ["npx","nodemon", "./api/index.js"]

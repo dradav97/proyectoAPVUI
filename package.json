@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/dradav97/proyectoAPVUI#readme",
   "devDependencies": {
-    "jasmine": "^3.6.4"
+    "jasmine": "^3.6.4",
+    "nodemon": "^2.0.7"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nanoid": "^2.1.11"
   }
 }
