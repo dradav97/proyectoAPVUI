@@ -22,7 +22,7 @@ module.exports= function (injectedStore) {
             // esto es como decir body.id ? body.id : nanoid()
         }
         
-        return store.upsert(TABLA,data)
+        return store.upsert(TABLA,user)
     }
 
     function remove(id){
