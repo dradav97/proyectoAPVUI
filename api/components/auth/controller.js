@@ -1,21 +1,26 @@
 const auth = require('./../../../auth')
 const bcrypt = require('bcrypt')
+const { json } = require('express')
 const TABLA = 'auth'
 
 module.exports= function (injectedStore) {
     let store = injectedStore
     if(!store){
-        store = require('../../../store/dummy')
+        store = require('../../../store/mongo')
     }
     
     async function login(username, password){
-        const data= await store.query(TABLA, {username : username})
+        
+        const data= await store.query(TABLA,username)
         // bcrypt.compare() return a promisse but we use then to return the token
-        return bcrypt.compare(password,data.password)
-            .then(ifEquals=>{
-                if (ifEquals===true) {
+        console.log(data[0].password)
+        return bcrypt.compare(password,data[0].password)
+            .then(ifEquals=>{               
+    
+                if (ifEquals) {
                     //generate token
-                    return auth.sign(data)
+                    
+                    return auth.sign({ ...data[0]})
                 }else{
                     throw new Error('Informacion invalida')
                 }                
@@ -25,7 +30,7 @@ module.exports= function (injectedStore) {
     // this for when we add a new user
     async function upsert(data){
         const authData = {
-            id: data.id,
+        
         }
         if (data.username) {
             authData.username = data.username

@@ -12,7 +12,7 @@ router.use(express.json())
 router.get('/',list)
 router.get('/:id',get)
 router.post('/',upsert)
-router.put('/',secure('update'),upsert)
+router.put('/',secure('update'),update)
 router.delete('/:id',delet)
 
 
@@ -20,7 +20,9 @@ router.delete('/:id',delet)
 function list(req, res, next){   
     controller.list()
         .then((lista)=>{
-            response.succes(req,res, lista, 200)            
+            
+            response.succes(req,res, lista, 200)
+
         })
         //.catch((err)=>response.error(req, res, err.message, 500))
         .catch(next)     
@@ -40,8 +42,8 @@ function upsert(req, res, next){
         .catch(next)  
 }
 
-function delet(req, res){
-    controller.delete(req.params.id)
+function delet(req, res,next){
+    controller.remove(req.params.id)
     // pongo que responda con 204 por que indica que la solicitud se completo pero no devuelve información
         .then((id)=>response.succes(req, res, id, 204))
         //.catch((err)=>response.error(req,res, err.message, 500))

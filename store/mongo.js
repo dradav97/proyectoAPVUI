@@ -1,6 +1,7 @@
 
 const { MongoClient, ObjectId } =require('mongodb')
 const config = require('./../config')
+
 //MongoDB URI
 // mongodb+srv://DB_USER:DB_PASSWORD@DB_HOST/BD_NAME
 const USER= encodeURIComponent(config.mongo.dbUser)
@@ -17,11 +18,10 @@ const connectionParams = {
     }
 }
 
-
 function connect() {
     
     let client = new MongoClient(MONGO_URI, connectionParams);
-    let connection= new Promise((resolve,reject)=>{
+    connection= new Promise((resolve,reject)=>{
         client.connect(err=>{
             if(err){                
                 reject(err)                
@@ -31,26 +31,103 @@ function connect() {
             }
         })
     })
-    return connection
-    
+    return connection    
 }
 
-async function list(collection, tags){
-    
+function list(collection){    
     return new Promise ((resolve, reject)=>{
-        output= connect().then(db=>{            
-            return db
-            .collection(collection)
-            .find({})
-            .toArray()
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .find({})
+                .toArray())
         })
         resolve(output)
     })
 }
 
+function get(collection,id){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .find({ _id: ObjectId(id) })
+                .toArray())
+        })
+        
+        resolve(output)
+    })
+}
+
+function upsert(collection, data){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .insertOne(data))
+        })
+        
+        resolve(output.insertedId)
+    })
+}
+
+function update(collection,id, data){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .updateOne({ _id:ObjectId(id) },{ $set: data }, { upsert: true}))
+        })        
+        resolve(output.upsertedId || id)
+    })
+}
+
+function remove(collection,id){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .deleteOne({ _id:ObjectId(id) }))
+        })        
+        resolve(output.upsertedId || id)
+    })
+}
+
+function query(collection, username){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}           
+            return (
+                db
+                .collection(collection)
+                .find({username :username})
+                .toArray())
+        })
+        
+        resolve(output)
+    })
+
+
+}
+
 
 module.exports = {
     list,
+    get,
+    upsert,
+    update,
+    remove,
+    query
 };
 
 
