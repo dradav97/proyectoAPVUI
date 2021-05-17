@@ -1,46 +1,48 @@
-const nanoid = require('nanoid');
-const auth = require('../auth');
-const TABLA = 'user'
+const nanoid = require('nanoid')
+const auth = require('../auth')
 
+const TABLA = 'user';
 
-module.exports= function (injectedStore) {
-    let store = injectedStore
-    if(!store){
-        store = require('../../../store/dummy')
-    }
-    function list(){
-        return store.list(TABLA)
+module.exports = function (injectedStore) {
+    let store = injectedStore;
+    if (!store) {
+        store = require('../../../store/mongo');
     }
 
-    function get(id){
-        return store.get(TABLA,id)
+    async function list() {
+        return await store.list(TABLA);
     }
 
-    async function upsert(body){
-        let user = {            
+    function get(id) {
+        return store.get(TABLA, id);
+    }
+
+    async function upsert(body) {
+        const user = {
             name: body.name,
             username: body.username,
-            id: body.id ?? nanoid()
-            // esto es como decir body.id ? body.id : nanoid()
         }
-        
+
+        if (body.id) {
+            user.id = body.id;
+        } else {
+            user.id = nanoid();
+        }
+
         if (body.password || body.username) {
             await auth.upsert({
                 id: user.id,
                 username: user.username,
                 password: body.password,
-            })          
+            })
         }
-        return store.upsert(TABLA,user)
+
+        return store.upsert(TABLA, user);
     }
 
-    function remove(id){
-        store.remove(TABLA, id)
-    }
     return {
         list,
         get,
         upsert,
-        remove,
-    }
+    };
 }

@@ -1,5 +1,5 @@
-const store = require('../../../store/dummy')
+const MongoLib = require('../../../store/mongo')
 const crl = require('./controller')
 
 
-module.exports = crl(store)
+module.exports = crl(MongoLib)
