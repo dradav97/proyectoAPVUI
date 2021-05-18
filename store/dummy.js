@@ -34,6 +34,7 @@ async function remove (tabla, id) {
 }
 
 async function query(tabla, q) {
+    
     let col = await list(tabla)
     let keys = Object.keys(q)
     let key = keys[0]

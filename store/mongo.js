@@ -18,8 +18,7 @@ const connectionParams = {
     }
 }
 
-function connect() {
-    
+function connect() {    
     let client = new MongoClient(MONGO_URI, connectionParams);
     connection= new Promise((resolve,reject)=>{
         client.connect(err=>{
@@ -116,10 +115,22 @@ function query(collection, username){
         
         resolve(output)
     })
-
-
 }
 
+function queryName_id(collection, username ){
+    return new Promise ((resolve, reject)=>{
+        output= connect().then((db,err)=>{ 
+            if (err) {reject(err)}            
+            return (
+                db
+                .collection(collection)
+                .find({ username: username},{_id:1})
+                .toArray())
+        })
+        
+        resolve(output)
+    })
+}
 
 module.exports = {
     list,
@@ -127,7 +138,8 @@ module.exports = {
     upsert,
     update,
     remove,
-    query
+    query,
+    queryName_id
 };
 
 

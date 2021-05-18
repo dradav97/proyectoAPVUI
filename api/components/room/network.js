@@ -4,7 +4,6 @@ const response = require('../../../network/response')
 const controller = require('./index')
 const router = express.Router()
 
-
 // use to be able to read the body of a request
 router.use(express.json())
 
@@ -12,22 +11,10 @@ router.use(express.json())
 router.get('/',list)
 router.get('/:id',get)
 router.post('/',upsert)
-router.put('/:id',secure('update'),update)
+router.put('/:id',update)
 router.delete('/:id',delet)
 
-
 // Internal Functions
-function list(req, res, next){   
-    controller.list()
-        .then((lista)=>{
-            
-            response.succes(req,res, lista, 200)
-
-        })
-        //.catch((err)=>response.error(req, res, err.message, 500))
-        .catch(next)     
-}
-
 function get(req, res, next){   
     controller.get(req.params.id)
         .then((user)=>response.succes(req,res, user, 200))
@@ -56,4 +43,5 @@ function update(req, res, next){
         //.catch((err)=>response.error(req, res, err.message, 500))
         .catch(next)  
 }
+
 module.exports = router

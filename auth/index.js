@@ -30,13 +30,16 @@ function verify(token){
 const check = {
     own: function(req,owner){
         const decoded=decodeHeader(req)
-        console.log(decoded)
+        //console.log("----"+JSON.stringify(decoded))
 
         //check if is own or not
         if(decoded.id!== owner){
             //error 401 = unauthorized 
             throw error('Not can do this', 401)            
         }
+    },
+    authorized: function (req) {
+        
     }
 }
 
